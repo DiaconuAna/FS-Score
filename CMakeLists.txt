@@ -17,7 +17,7 @@ set(CMAKE_AUTOUIC ON)
 include_directories(.)
 
 add_executable(FS_Score_v2
-        main.cpp mainGUI.cpp mainGUI.h LadiesSPWindow.cpp LadiesSPWindow.h LadiesFSWindow.cpp LadiesFSWindow.h Score.cpp Score.h ScoreRepository.cpp ScoreRepository.h ScoreService.cpp ScoreService.h)
+        main.cpp GUI/mainGUI.cpp GUI/mainGUI.h Ladies/LadiesSPWindow.cpp Ladies/LadiesSPWindow.h Ladies/LadiesFSWindow.cpp Ladies/LadiesFSWindow.h Model/Score.cpp Model/Score.h Service/ScoreService.cpp Service/ScoreService.h Model/Element.h Model/Singles/Jumps.cpp Model/Singles/Jumps.h Model/Singles/Spins.cpp Model/Singles/Spins.h Model/Singles/StepSequence.cpp Model/Singles/StepSequence.h Model/Singles/ChoreoSequence.cpp Model/Singles/ChoreoSequence.h Model/Element.cpp Repository/ElementsRepo.cpp Repository/ElementsRepo.h)
 
 if (NOT CMAKE_PREFIX_PATH)
     message(WARNING "CMAKE_PREFIX_PATH is not defined, you may need to set it "
