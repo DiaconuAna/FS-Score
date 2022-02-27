@@ -18,6 +18,7 @@ public:
 
     std::vector<Element*> getElements();
     std::vector<Jumps*> getJumps();
+    std::vector<StepSequence*> getStsq();
 
     ~ScoreService();
 

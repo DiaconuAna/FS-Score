@@ -37,7 +37,7 @@ std::string Jumps::toString() {
     auto str = std::to_string(this->rotationNumber)+this->abbreviation;
 
     if(this->getEdgeFlag())
-        str+= "!";
+        str+= "e";
 
     if(this->getUnderrotationFlag())
         str+= "<";
@@ -53,7 +53,7 @@ std::ostream &operator<<(std::ostream &os, const Jumps &j) {
     os << std::to_string(j.rotationNumber) << j.abbreviation;
 
     if(j.edgeFlag){
-        std::string str = "!";
+        std::string str = "e";
         os << str;
     }
 

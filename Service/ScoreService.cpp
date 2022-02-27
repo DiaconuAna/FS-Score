@@ -19,3 +19,7 @@ ScoreService::~ScoreService() {
 std::vector<Jumps *> ScoreService::getJumps() {
     return elementsRepository->getJumps();
 }
+
+std::vector<StepSequence *> ScoreService::getStsq() {
+    return elementsRepository->getStsqs();
+}

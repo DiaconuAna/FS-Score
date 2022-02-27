@@ -63,6 +63,8 @@ public:
 
     void computePCS();
     void addJumps();
+    void addStsq();
+
 };
 
 

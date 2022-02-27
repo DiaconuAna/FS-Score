@@ -139,6 +139,7 @@ void LadiesSPWindow::initGUI() {
     gridLayout->addWidget(stsq,7,1);
 
     addJumps();
+    addStsq();
 
     for(int i=0;i<7;i++){
         //(SPelements)[i] = new QComboBox;
@@ -251,6 +252,18 @@ void LadiesSPWindow::initGUI() {
 }
 
 void LadiesSPWindow::connect() {
+
+    QObject::connect(this->stsq, &QComboBox::currentIndexChanged, this, [this](){
+       int index = stsq->currentIndex()-1;
+       StepSequence* s = this->_service.getStsq()[index];
+
+        double baseValue = s->getBaseValue();
+        this->SPbaseValueLabels[6]->setText(QString::number(baseValue, 'f', 2));
+        this->SPTotalLabels[6]->setText(QString::number(baseValue,'f',2));
+        updateTotals();
+
+    });
+
     QObject::connect(this->jump1, &QComboBox::currentIndexChanged, this, [this](){
         int index = jump1->currentIndex();
         Jumps* currentJump = this->_service.getJumps()[index-1];
@@ -373,12 +386,13 @@ void LadiesSPWindow::connectPCS() {
 
 void LadiesSPWindow::computePCS() {
     float pcs = 0;
-    std::cout<<"hello\n";
-    std::cout<<this->SPpcs[0]->value()<<"\n";
-    std::cout<<this->SPpcs[1]->value()<<"\n";
-    std::cout<<this->SPpcs[2]->value()<<"\n";
-    std::cout<<this->SPpcs[3]->value()<<"\n";
-    std::cout<<this->SPpcs[4]->value()<<"\n";
+
+    for(int i=0;i<5;i++){
+        pcs += (this->SPpcs[i]->value() * 0.8);
+    }
+
+    this->SPPCSLabel->setText(QString::number(pcs, 'f', 2));
+    
 }
 
 void LadiesSPWindow::addJumps() {
@@ -398,6 +412,19 @@ void LadiesSPWindow::addJumps() {
     }
 
 }
+
+
+void LadiesSPWindow::addStsq() {
+
+    std::vector<StepSequence*> stsqs = this->_service.getStsq();
+
+    stsq->addItem("none");
+
+    for(auto* s: stsqs)
+        stsq->addItem(QString::fromStdString(s->toString()));
+
+}
+
 
 void LadiesSPWindow::connectGOE() {
     if (this->SPgoes.size() == 7) {

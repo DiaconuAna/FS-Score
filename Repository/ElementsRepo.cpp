@@ -6,6 +6,7 @@
 
 ElementsRepo::ElementsRepo() {
     populateJumps();
+    populateStepSequences();
 }
 
 ElementsRepo::~ElementsRepo() {
@@ -87,7 +88,31 @@ void ElementsRepo::populateJumps() {
     this->jumps.push_back(new Jumps("Salchow","S",3,3.44,0,0,0, true, false, true));
     this->jumps.push_back(new Jumps("Loop","Lo",3,3.92,0,0,0, true, false, true));
 
-    
+    // quad jumps + triple axel
+    this->jumps.push_back(new Jumps("Axel","A",3,8,0,0,0, true,false, false));
+    this->jumps.push_back(new Jumps("Axel","A",4,12.5,0,0,0, true,false, false));
+    this->jumps.push_back(new Jumps("Lutz","Lz",4,11.5,0,0,0, true,false, false));
+    this->jumps.push_back(new Jumps("Flip","F",4,11,0,0,0, true, false, false));
+    this->jumps.push_back(new Jumps("Toeloop","T",4,9.5,0,0,0, true, false, false));
+    this->jumps.push_back(new Jumps("Salchow","S",4,9.7,0,0,0, true, false, false));
+    this->jumps.push_back(new Jumps("Loop","Lo",4,10.5,0,0,0, true, false, false));
+
+    // quad jumps with calls
+    this->jumps.push_back(new Jumps("Axel","A",3,6.4,0,0,0, true,false, true));
+    this->jumps.push_back(new Jumps("Axel","A",4,10,0,0,0, true,false, true));
+
+
+    this->jumps.push_back(new Jumps("Lutz","Lz",4,9.2,0,0,0, true, true, false));
+    this->jumps.push_back(new Jumps("Lutz","Lz",4,9.2,0,0,0, true, false, true));
+    this->jumps.push_back(new Jumps("Lutz","Lz",4,6.9,0,0,0, true, true, true));
+
+    this->jumps.push_back(new Jumps("Flip","F",4,8.8,0,0,0, true, true, false));
+    this->jumps.push_back(new Jumps("Flip","F",4,8.8,0,0,0, true, false, true));
+    this->jumps.push_back(new Jumps("Flip","F",4,6.6,0,0,0, true, true, true));
+
+    this->jumps.push_back(new Jumps("Toeloop","T",4,7.6,0,0,0, true, false, true));
+    this->jumps.push_back(new Jumps("Salchow","S",4,7.76,0,0,0, true, false, true));
+    this->jumps.push_back(new Jumps("Loop","Lo",4,8.4,0,0,0, true, false, true));
 
 }
 
@@ -102,4 +127,17 @@ std::vector<Element *> ElementsRepo::getElements() {
 
 std::vector<Jumps *> ElementsRepo::getJumps() {
     return this->jumps;
+}
+
+std::vector<StepSequence *> ElementsRepo::getStsqs() {
+    return this->stsqs;
+}
+
+
+void ElementsRepo::populateStepSequences() {
+    stsqs.push_back(new StepSequence{0,1.5,0,0,0,true});
+    stsqs.push_back(new StepSequence{1,1.8,0,0,0,true});
+    stsqs.push_back(new StepSequence{2,2.6,0,0,0,true});
+    stsqs.push_back(new StepSequence{3,3.3,0,0,0,true});
+    stsqs.push_back(new StepSequence{4,3.9,0,0,0,true});
 }
