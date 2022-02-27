@@ -13,6 +13,7 @@
 #include <QSpinBox>
 #include <QSlider>
 #include <QListWidget>
+#include <Service/ScoreService.h>
 #include "Ladies/LadiesFSWindow.h"
 
 class mainGUI : public QWidget {
@@ -31,10 +32,12 @@ class mainGUI : public QWidget {
     LadiesFSWindow* ladiesWindow;
 
 
+    ScoreService& _service;
 
     public:
 
-    mainGUI();
+    //mainGUI();
+    mainGUI(ScoreService& s);
     ~mainGUI();
 
     void initGUI();

@@ -5,10 +5,16 @@
 #include <QFormLayout>
 #include "mainGUI.h"
 
-mainGUI::mainGUI() {
+//mainGUI::mainGUI() {
+//    initGUI();
+//    connectGUI();
+//}
+
+mainGUI::mainGUI(ScoreService &s): _service{s} {
     initGUI();
     connectGUI();
 }
+
 
 mainGUI::~mainGUI() {
     delete this->LadiesButton;
@@ -53,7 +59,7 @@ void mainGUI::connectGUI() {
 }
 
 void mainGUI::openLadiesWindow() {
-    this->ladiesWindow = new LadiesFSWindow();
+    this->ladiesWindow = new LadiesFSWindow(this->_service);
     ladiesWindow->show();
 
 }

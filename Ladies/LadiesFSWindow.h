@@ -11,6 +11,7 @@
 #include <QVBoxLayout>
 #include <QSpinBox>
 #include <QComboBox>
+#include <Service/ScoreService.h>
 #include "LadiesSPWindow.h"
 
 class LadiesFSWindow : public QWidget {
@@ -26,10 +27,11 @@ private:
     QLineEdit* nameEdit;
 
     LadiesSPWindow* SPWindow;
+    ScoreService& _service;
 
 
 public:
-    LadiesFSWindow();
+    LadiesFSWindow(ScoreService& s);
     ~LadiesFSWindow() override;
 
     void initGUI();

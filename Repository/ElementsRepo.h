@@ -14,6 +14,7 @@
 class ElementsRepo {
 private:
     std::vector<Element*> elements;
+    std::vector<Jumps*> jumps;
 public:
     ElementsRepo();
     ~ElementsRepo();
@@ -21,7 +22,9 @@ public:
     void populateJumps();
     void addElement(Element* e);
 
+
     std::vector<Element*> getElements();
+    std::vector<Jumps*> getJumps();
 
 
 };

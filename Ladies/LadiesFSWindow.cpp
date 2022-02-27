@@ -6,7 +6,7 @@
 #include <iostream>
 #include "LadiesFSWindow.h"
 
-LadiesFSWindow::LadiesFSWindow() {
+LadiesFSWindow::LadiesFSWindow(ScoreService& s): _service{s} {
     initGUI();
     connect();
 }
@@ -103,6 +103,6 @@ void LadiesFSWindow::connect() {
 void LadiesFSWindow::openSP() {
     QString skaterName = this->nameEdit->text();
 
-    this->SPWindow = new LadiesSPWindow(skaterName.toStdString());
+    this->SPWindow = new LadiesSPWindow(skaterName.toStdString(), this->_service);
     SPWindow->show();
 }

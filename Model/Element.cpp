@@ -53,6 +53,8 @@ void Element::setSecondHalfFlag(int flag) {
 
 void Element::computeGOEMark() {
 
+    this->GOEMark = this->GOE * 0.1 * this->BaseValue;
+
 }
 
 bool Element::getValidFlag() {

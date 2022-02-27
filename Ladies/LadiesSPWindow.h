@@ -13,6 +13,8 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QLineEdit>
+#include <QCheckBox>
+#include <Service/ScoreService.h>
 
 class LadiesSPWindow : public QWidget {
     Q_OBJECT
@@ -24,7 +26,11 @@ private:
     QVBoxLayout* SPMenu;
 
     QLineEdit* nameEdit;
-    QVector<QComboBox *> SPelements;
+    //QVector<QComboBox *> SPelements;
+    QComboBox* jump1, *jump2, *combojump1, *combojump2;
+    QCheckBox* j1, *j2, *cj;
+    QComboBox* spin1, *spin2, *spin3;
+    QComboBox* stsq;
     QVector<QSpinBox* > SPgoes;
     QVector<QLabel*> SPbaseValueLabels;
     QVector<QLabel*> SPGOEMarkLabels;
@@ -39,19 +45,24 @@ private:
     QPushButton* SPClearScore;
 
     int SPPCSbullets[5];
+    ScoreService& _service;
 
 public:
-    LadiesSPWindow(std::string name);
+    LadiesSPWindow(std::string name, ScoreService& s);
     ~LadiesSPWindow();
 
     void initGUI();
 
     void connect();
     void connectPCS();
+    void connectGOE();
+    void connectTotalBV();
+    void connectTotalTES();
+
+    void updateTotals();
 
     void computePCS();
-
-
+    void addJumps();
 };
 
 
