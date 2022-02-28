@@ -29,6 +29,9 @@ private:
     //QVector<QComboBox *> SPelements;
     QComboBox* jump1, *jump2, *combojump1, *combojump2;
     QCheckBox* j1, *j2, *cj;
+    QComboBox* fs1, *fs2, *fs3;
+    QComboBox* cs1, *cs2, *cs3;
+    QComboBox* lvls1, *lvls2, *lvls3;
     QComboBox* spin1, *spin2, *spin3;
     QComboBox* stsq;
     QVector<QSpinBox* > SPgoes;
@@ -64,6 +67,7 @@ public:
     void computePCS();
     void addJumps();
     void addStsq();
+    void addSpins();
 
 };
 

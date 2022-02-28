@@ -19,6 +19,11 @@ public:
     std::vector<Element*> getElements();
     std::vector<Jumps*> getJumps();
     std::vector<StepSequence*> getStsq();
+    std::vector<Spins*> getSpins();
+
+    Spins* getSpin(bool flyingFlag, bool changeFlag, std::string name, int level);
+
+
 
     ~ScoreService();
 

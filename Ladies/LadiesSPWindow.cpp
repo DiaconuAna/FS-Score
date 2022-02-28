@@ -107,6 +107,15 @@ void LadiesSPWindow::initGUI() {
     this->spin2 = new QComboBox;
     this->spin3 = new QComboBox;
     this->stsq = new QComboBox;
+    this->fs1 = new QComboBox;
+    this->cs1 = new QComboBox;
+    this->lvls1 = new QComboBox;
+    this->fs2 = new QComboBox;
+    this->cs2 = new QComboBox;
+    this->lvls2 = new QComboBox;
+    this->fs3 = new QComboBox;
+    this->cs3 = new QComboBox;
+    this->lvls3 = new QComboBox;
 
     //initialising the grid layout
     gridLayout->addWidget(new QLabel{"Element"},0,0);
@@ -129,17 +138,40 @@ void LadiesSPWindow::initGUI() {
     comboLayout->addWidget(combojump2,0,2);
     gridLayout->addLayout(comboLayout,3,1);
     gridLayout->addWidget(cj,3,5);
+
+    auto* spin1Layout = new QGridLayout{};
+    spin1Layout->addWidget(fs1,0,0);
+    spin1Layout->addWidget(cs1,0,1);
+    spin1Layout->addWidget(spin1,0,2);
+    spin1Layout->addWidget(lvls1,0,3);
+
     gridLayout->addWidget(new QLabel{"Spin 1."},4,0);
-    gridLayout->addWidget(spin1,4,1);
+    gridLayout->addLayout(spin1Layout,4,1);
+
+    auto* spin2Layout = new QGridLayout{};
+    spin2Layout->addWidget(fs2,0,0);
+    spin2Layout->addWidget(cs2,0,1);
+    spin2Layout->addWidget(spin2,0,2);
+    spin2Layout->addWidget(lvls2,0,3);
+
     gridLayout->addWidget(new QLabel{"Spin 2."},5,0);
-    gridLayout->addWidget(spin2,5,1);
+    gridLayout->addLayout(spin2Layout,5,1);
+
+    auto* spin3Layout = new QGridLayout{};
+    spin3Layout->addWidget(fs3,0,0);
+    spin3Layout->addWidget(cs3,0,1);
+    spin3Layout->addWidget(spin3,0,2);
+    spin3Layout->addWidget(lvls3,0,3);
+
     gridLayout->addWidget(new QLabel{"Spin 3."},6,0);
-    gridLayout->addWidget(spin3,6,1);
+    gridLayout->addLayout(spin3Layout,6,1);
+
     gridLayout->addWidget(new QLabel{"Stsq."},7,0);
     gridLayout->addWidget(stsq,7,1);
 
     addJumps();
     addStsq();
+    addSpins();
 
     for(int i=0;i<7;i++){
         //(SPelements)[i] = new QComboBox;
@@ -392,17 +424,17 @@ void LadiesSPWindow::computePCS() {
     }
 
     this->SPPCSLabel->setText(QString::number(pcs, 'f', 2));
-    
+
 }
 
 void LadiesSPWindow::addJumps() {
 
     std::vector<Jumps*> jumps = this->_service.getJumps();
 
-    jump1->addItem("none");
-    jump2->addItem("none");
-    combojump1->addItem("none");
-    combojump2->addItem("none");
+    jump1->addItem("");
+    jump2->addItem("");
+    combojump1->addItem("");
+    combojump2->addItem("");
 
     for(auto* j: jumps){
         jump1->addItem(QString::fromStdString(j->toString()));
@@ -418,11 +450,67 @@ void LadiesSPWindow::addStsq() {
 
     std::vector<StepSequence*> stsqs = this->_service.getStsq();
 
-    stsq->addItem("none");
+    stsq->addItem("");
 
     for(auto* s: stsqs)
         stsq->addItem(QString::fromStdString(s->toString()));
 
+}
+
+void LadiesSPWindow::addSpins() {
+
+    spin1->addItem("");
+    spin1->addItem("USp");
+    spin1->addItem("LSp");
+    spin1->addItem("CSp");
+    spin1->addItem("SSp");
+    spin1->addItem("CoSp");
+    fs1->addItem("");
+    fs1->addItem("F");
+    cs1->addItem("");
+    cs1->addItem("C");
+    lvls1->addItem("");
+    lvls1->addItem("B");
+    lvls1->addItem("1");
+    lvls1->addItem("2");
+    lvls1->addItem("3");
+    lvls1->addItem("4");
+
+
+    spin2->addItem("");
+    spin2->addItem("USp");
+    spin2->addItem("LSp");
+    spin2->addItem("CSp");
+    spin2->addItem("SSp");
+    spin2->addItem("CoSp");
+    fs2->addItem("");
+    fs2->addItem("F");
+    cs2->addItem("");
+    cs2->addItem("C");
+    lvls2->addItem("");
+    lvls2->addItem("B");
+    lvls2->addItem("1");
+    lvls2->addItem("2");
+    lvls2->addItem("3");
+    lvls2->addItem("4");
+
+
+    spin3->addItem("");
+    spin3->addItem("USp");
+    spin3->addItem("LSp");
+    spin3->addItem("CSp");
+    spin3->addItem("SSp");
+    spin3->addItem("CoSp");
+    fs3->addItem("");
+    fs3->addItem("F");
+    cs3->addItem("");
+    cs3->addItem("C");
+    lvls3->addItem("");
+    lvls3->addItem("B");
+    lvls3->addItem("1");
+    lvls3->addItem("2");
+    lvls3->addItem("3");
+    lvls3->addItem("4");
 }
 
 
