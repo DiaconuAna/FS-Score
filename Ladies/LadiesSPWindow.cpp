@@ -67,7 +67,8 @@ void LadiesSPWindow::initGUI() {
     this->SPTotalLabel = new QLabel{};
 
     firstLayout->addWidget(nameLabel, 0, 0);
-    firstLayout->addWidget(deductionBox,0 ,1);
+    firstLayout->addWidget(new QLabel{"Deduction:"},0,1);
+    firstLayout->addWidget(deductionBox,0 ,2);
     firstLayout->addWidget(new QLabel{"Total: "},1,0);
     firstLayout->addWidget(this->SPTotalLabel,1,1);
 
@@ -277,6 +278,15 @@ void LadiesSPWindow::initGUI() {
     SPMenu->addWidget(line1);
     SPMenu->addLayout(secondLayout);
 
+    auto* thirdLayout = new QGridLayout;
+    this->SPComputeScore = new QPushButton{"Compute Score"};
+    this->SPClearScore = new QPushButton{"Clear Score"};
+
+    thirdLayout->addWidget(SPComputeScore,0,0);
+    thirdLayout->addWidget(SPClearScore,0,1);
+
+    SPMenu->addWidget(line1);
+    SPMenu->addLayout(thirdLayout);
 
     SPMenu->setSpacing(0);
 
@@ -285,68 +295,80 @@ void LadiesSPWindow::initGUI() {
 
 void LadiesSPWindow::connect() {
 
+    QObject::connect(this->SPClearScore, &QPushButton::clicked, this, &LadiesSPWindow::clearScore);
+
     QObject::connect(this->stsq, &QComboBox::currentIndexChanged, this, [this](){
        int index = stsq->currentIndex()-1;
-       StepSequence* s = this->_service.getStsq()[index];
+       if(index >= 0) {
+           StepSequence *s = this->_service.getStsq()[index];
 
-        double baseValue = s->getBaseValue();
-        this->SPbaseValueLabels[6]->setText(QString::number(baseValue, 'f', 2));
-        this->SPTotalLabels[6]->setText(QString::number(baseValue,'f',2));
-        updateTotals();
+           double baseValue = s->getBaseValue();
+           this->SPbaseValueLabels[6]->setText(QString::number(baseValue, 'f', 2));
+           this->SPTotalLabels[6]->setText(QString::number(baseValue, 'f', 2));
+           updateTotals();
+       }
 
     });
 
-    QObject::connect(this->jump1, &QComboBox::currentIndexChanged, this, [this](){
+    QObject::connect(this->jump1, &QComboBox::currentIndexChanged, this, [this]() {
         int index = jump1->currentIndex();
-        Jumps* currentJump = this->_service.getJumps()[index-1];
+        if (index - 1 >= 0) {
+        Jumps *currentJump = this->_service.getJumps()[index - 1];
 
         double baseValue = currentJump->getBaseValue();
         this->SPbaseValueLabels[0]->setText(QString::number(baseValue, 'f', 2));
-        this->SPTotalLabels[0]->setText(QString::number(baseValue,'f',2));
+        this->SPTotalLabels[0]->setText(QString::number(baseValue, 'f', 2));
         updateTotals();
+    }
 
     });
 
     QObject::connect(this->jump2, &QComboBox::currentIndexChanged, this, [this](){
         int index = jump2->currentIndex();
-        Jumps* currentJump = this->_service.getJumps()[index-1];
+        if(index - 1 >= 0) {
+            Jumps *currentJump = this->_service.getJumps()[index - 1];
 
-        double baseValue = currentJump->getBaseValue();
-        this->SPbaseValueLabels[1]->setText(QString::number(baseValue, 'f', 2));
-        this->SPTotalLabels[1]->setText(QString::number(baseValue,'f',2));
-        updateTotals();
+            double baseValue = currentJump->getBaseValue();
+            this->SPbaseValueLabels[1]->setText(QString::number(baseValue, 'f', 2));
+            this->SPTotalLabels[1]->setText(QString::number(baseValue, 'f', 2));
+            updateTotals();
+        }
     });
 
     QObject::connect(this->combojump1, &QComboBox::currentIndexChanged, this, [this](){
         int index = combojump1->currentIndex()-1;
-        Jumps* currentJump = this->_service.getJumps()[index];
+        if(index > 0) {
+            Jumps *currentJump = this->_service.getJumps()[index];
 
-        double baseValue = 0;
+            double baseValue = 0;
 
-        if(combojump2->currentIndex()!=0){
-            baseValue += this->_service.getJumps()[combojump2->currentIndex()-1]->getBaseValue();
+            if (combojump2->currentIndex() != 0) {
+                baseValue += this->_service.getJumps()[combojump2->currentIndex() - 1]->getBaseValue();
+            }
+
+            baseValue += currentJump->getBaseValue();
+            this->SPbaseValueLabels[2]->setText(QString::number(baseValue, 'f', 2));
+            this->SPTotalLabels[2]->setText(QString::number(baseValue, 'f', 2));
+            updateTotals();
         }
-
-        baseValue += currentJump->getBaseValue();
-        this->SPbaseValueLabels[2]->setText(QString::number(baseValue, 'f', 2));
-        this->SPTotalLabels[2]->setText(QString::number(baseValue,'f',2));
-        updateTotals();
     });
 
     QObject::connect(this->combojump2, &QComboBox::currentIndexChanged, this, [this](){
         int index = combojump2->currentIndex()-1;
-        Jumps* currentJump = this->_service.getJumps()[index];
+        if(index > 0) {
+            Jumps *currentJump = this->_service.getJumps()[index];
 
-        double baseValue = 0;
+            double baseValue = 0;
 
-        if(combojump1->currentIndex()!=0){
-            baseValue += this->_service.getJumps()[combojump1->currentIndex()-1]->getBaseValue();
+            if (combojump1->currentIndex() != 0) {
+                baseValue += this->_service.getJumps()[combojump1->currentIndex() - 1]->getBaseValue();
+            }
+
+            baseValue += currentJump->getBaseValue();
+            this->SPbaseValueLabels[2]->setText(QString::number(baseValue, 'f', 2));
+            this->SPTotalLabels[2]->setText(QString::number(baseValue, 'f', 2));
+            updateTotals();
         }
-
-        baseValue += currentJump->getBaseValue();
-        this->SPbaseValueLabels[2]->setText(QString::number(baseValue, 'f', 2));
-        this->SPTotalLabels[2]->setText(QString::number(baseValue,'f',2));
-        updateTotals();
     });
 
     QObject::connect(this->j1, &QCheckBox::stateChanged, this, [this](){
@@ -405,6 +427,7 @@ void LadiesSPWindow::connect() {
     connectGOE();
     connectTotalBV();
     connectTotalTES();
+    connectSpins();
 }
 
 void LadiesSPWindow::connectPCS() {
@@ -424,6 +447,7 @@ void LadiesSPWindow::computePCS() {
     }
 
     this->SPPCSLabel->setText(QString::number(pcs, 'f', 2));
+    updateTotals();
 
 }
 
@@ -552,7 +576,157 @@ void LadiesSPWindow::connectTotalTES() {
     this->SPTESLabel->setText(QString::number(total, 'f', 2));
 }
 
+void LadiesSPWindow::connectSpins() {
+    QObject::connect(this->spin1, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectSpin1);
+    QObject::connect(this->fs1, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectSpin1);
+    QObject::connect(this->cs1, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectSpin1);
+    QObject::connect(this->lvls1, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectSpin1);
+
+    QObject::connect(this->spin2, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectSpin2);
+    QObject::connect(this->fs2, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectSpin2);
+    QObject::connect(this->cs2, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectSpin2);
+    QObject::connect(this->lvls2, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectSpin2);
+
+    QObject::connect(this->spin3, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectSpin3);
+    QObject::connect(this->fs3, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectSpin3);
+    QObject::connect(this->cs3, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectSpin3);
+    QObject::connect(this->lvls3, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectSpin3);
+}
+
+
+void LadiesSPWindow::connectSpin1() {
+    if(spin1->currentIndex() && lvls1->currentIndex()){
+
+        bool fly;
+        bool change;
+        if(this->fs1->currentIndex()){
+            fly = true;
+        }
+        else
+            fly = false;
+
+        if(this->cs1->currentIndex())
+            change = true;
+        else
+            change = false;
+
+        auto name = this->spin1->currentText().toStdString();
+        auto lvl = this->lvls1->currentText().toInt();
+
+        Spins* spin = this->_service.getSpin(fly, change, name, lvl);
+        std::cout<<spin->toString()<<" "<<spin->getBaseValue()<<"\n";
+        this->SPbaseValueLabels[3]->setText(QString::number(spin->getBaseValue(), 'f', 2));
+    }
+    else
+        std::cout<<0<<"\n";
+}
+
+
+
 void LadiesSPWindow::updateTotals() {
     connectTotalTES();
     connectTotalBV();
+
+    double TES = this->SPTESLabel->text().toDouble();
+    double PCS = this->SPPCSLabel->text().toDouble();
+    std::cout<<PCS<<std::endl;
+    double total = TES + PCS;
+
+    this->SPTotalLabel->setText(QString::number(total, 'f', 2));
 }
+
+void LadiesSPWindow::connectSpin2() {
+    if(spin2->currentIndex() && lvls2->currentIndex()){
+
+        bool fly;
+        bool change;
+        if(this->fs2->currentIndex()){
+            fly = true;
+        }
+        else
+            fly = false;
+
+        if(this->cs2->currentIndex())
+            change = true;
+        else
+            change = false;
+
+        auto name = this->spin2->currentText().toStdString();
+        auto lvl = this->lvls2->currentText().toInt();
+
+        Spins* spin = this->_service.getSpin(fly, change, name, lvl);
+        std::cout<<spin->toString()<<" "<<spin->getBaseValue()<<"\n";
+        this->SPbaseValueLabels[4]->setText(QString::number(spin->getBaseValue(), 'f', 2));
+    }
+    else
+        std::cout<<0<<"\n";
+}
+
+
+void LadiesSPWindow::connectSpin3() {
+    if(spin3->currentIndex() && lvls3->currentIndex()){
+
+        bool fly;
+        bool change;
+        if(this->fs3->currentIndex()){
+            fly = true;
+        }
+        else
+            fly = false;
+
+        if(this->cs3->currentIndex())
+            change = true;
+        else
+            change = false;
+
+        auto name = this->spin3->currentText().toStdString();
+        auto lvl = this->lvls3->currentText().toInt();
+
+        Spins* spin = this->_service.getSpin(fly, change, name, lvl);
+        std::cout<<spin->toString()<<" "<<spin->getBaseValue()<<"\n";
+        this->SPbaseValueLabels[5]->setText(QString::number(spin->getBaseValue(), 'f', 2));
+    }
+    else
+        std::cout<<0<<"\n";
+}
+
+
+
+void LadiesSPWindow::clearScore() {
+
+    this->deductionBox->setValue(0);
+    this->jump1->setCurrentIndex(0);
+    this->jump2->setCurrentIndex(0);
+    this->combojump2->setCurrentIndex(0);
+    this->combojump1->setCurrentIndex(0);
+    this->stsq->setCurrentIndex(0);
+    this->spin1->setCurrentIndex(0);
+    this->spin2->setCurrentIndex(0);
+    this->spin3->setCurrentIndex(0);
+    this->fs1->setCurrentIndex(0);
+    this->fs2->setCurrentIndex(0);
+    this->fs3->setCurrentIndex(0);
+    this->cs1->setCurrentIndex(0);
+    this->cs2->setCurrentIndex(0);
+    this->cs3->setCurrentIndex(0);
+    this->lvls1->setCurrentIndex(0);
+    this->lvls2->setCurrentIndex(0);
+    this->lvls3->setCurrentIndex(0);
+
+    for(int i=0;i<7;i++){
+        this->SPbaseValueLabels[i]->clear();
+        this->SPTotalLabels[i]->clear();
+        this->SPGOEMarkLabels[i]->clear();
+        this->SPgoes[i]->setValue(0);
+    }
+
+    this->j1->setCheckState(static_cast<Qt::CheckState>(false));
+    this->j2->setCheckState(static_cast<Qt::CheckState>(false));
+    this->cj->setCheckState(static_cast<Qt::CheckState>(false));
+
+    for(int i=0;i<5;i++)
+        this->SPpcs[i]->setValue(8.5);
+
+    this->SPTotalLabel->clear();
+}
+

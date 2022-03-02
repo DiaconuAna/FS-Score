@@ -61,6 +61,11 @@ public:
     void connectGOE();
     void connectTotalBV();
     void connectTotalTES();
+    void connectSpins();
+
+    void connectSpin1();
+    void connectSpin2();
+    void connectSpin3();
 
     void updateTotals();
 
@@ -68,6 +73,8 @@ public:
     void addJumps();
     void addStsq();
     void addSpins();
+
+    void clearScore();
 
 };
 
