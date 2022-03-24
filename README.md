@@ -13,4 +13,6 @@ Check [ISU Special regulations and technical rules for single & pair skating](ht
   ![Opening window](https://github.com/DiaconuAna/FS-Score/blob/main/Resources/demo1.png)
   
 - Senior Ladies Short Program Window
+  ![Ladies SP](https://github.com/DiaconuAna/FS-Score/blob/main/Resources/demo3.png)
   ![Ladies SP](https://github.com/DiaconuAna/FS-Score/blob/main/Resources/demo2.png)
+  
