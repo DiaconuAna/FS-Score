@@ -13,7 +13,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    a.setWindowIcon(QIcon("D:/Personal projects/FS Score v2/figure-skating.ico"));
+    a.setWindowIcon(QIcon("D:/Personal projects/FS Score v2/Resources/figure-skating.ico"));
 
     ElementsRepo repo;
     ScoreService s{repo};
@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     mainGUI gui{s};
     gui.setFixedSize(300,350);
 
-    gui.setStyleSheet("background-image:url(D:/Personal projects/FS Score v2/icee.jpg); background-position: center; ");
+    gui.setStyleSheet("background-image:url(D:/Personal projects/FS Score v2/Resources/icee.jpg); background-position: center; ");
     gui.show();
 
 
