@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <Exception/ElementException.h>
 #include "ScoreService.h"
 
 ScoreService::ScoreService(ElementsRepo& er): elementsRepository{&er} {
@@ -50,5 +51,35 @@ Spins *ScoreService::getSpin(bool flyingFlag, bool changeFlag, std::string name,
 //    }
 
     return levelSpins[0];
+}
+
+Jumps *ScoreService::getJump(bool urflag, bool edgeflag, int level, std::string name) {
+    std::vector<Jumps*> jumps = this->getJumps();
+    int ok;
+
+    if(edgeflag){
+        if(name == "Flip" || name == "Lutz")
+            ok = 1;
+        else ok = 0;
+    }
+    else
+        ok = 1;
+
+    if(ok){
+    std::vector<Jumps*> levelJumps(jumps.size());
+    auto it = std::copy_if(jumps.begin(), jumps.end(), levelJumps.begin(), [&level, &urflag, &edgeflag, &name](
+            const auto&x){
+        return x->getRotationNumber() == level && x->getUnderrotationFlag() == urflag && x->getEdgeFlag() == edgeflag &&
+        x->getJumpName() == name;
+    });
+
+    levelJumps.resize(std::distance(levelJumps.begin(), it));
+
+    // !! you can only have edge calls in flip and lutz
+
+    return levelJumps[0];}
+
+    throw ElementException("You do not have edge calls on toe jumps! (Axel/Loop/Salchow) and Toeloop");
+
 }
 

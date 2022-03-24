@@ -4,6 +4,8 @@
 
 #include <QFormLayout>
 #include <iostream>
+#include <Exception/ElementException.h>
+#include <QMessageBox>
 #include "LadiesSPWindow.h"
 
 LadiesSPWindow::LadiesSPWindow(std::string name, ScoreService& s): _service{s} {
@@ -117,6 +119,21 @@ void LadiesSPWindow::initGUI() {
     this->fs3 = new QComboBox;
     this->cs3 = new QComboBox;
     this->lvls3 = new QComboBox;
+    this->je1 = new QComboBox;
+    this->je2 = new QComboBox;
+    this->je3 = new QComboBox;
+    this->je4 = new QComboBox;
+    this->ju1 = new QComboBox;
+    this->ju2 = new QComboBox;
+    this->ju3 = new QComboBox;
+    this->ju4 = new QComboBox;
+    this->jlvl1 = new QComboBox;
+    this->jlvl2 = new QComboBox;
+    this->jlvl3 = new QComboBox;
+    this->jlvl4 = new QComboBox;
+
+
+
 
     //initialising the grid layout
     gridLayout->addWidget(new QLabel{"Element"},0,0);
@@ -127,16 +144,36 @@ void LadiesSPWindow::initGUI() {
     gridLayout->addWidget(new QLabel{"Total"},0,6);
 
     gridLayout->addWidget(new QLabel{"Jump 1."},1,0);
-    gridLayout->addWidget(jump1,1,1);
+    auto* jump1Layout = new QGridLayout{};
+    jump1Layout->addWidget(jlvl1,0,0);
+    jump1Layout->addWidget(jump1,0,1);
+    jump1Layout->addWidget(je1,0,2);
+    jump1Layout->addWidget(ju1,0,3);
+    gridLayout->addLayout(jump1Layout,1,1);
     gridLayout->addWidget(j1,1,5);
     gridLayout->addWidget(new QLabel{"Jump 2."},2,0);
-    gridLayout->addWidget(jump2,2,1);
+    auto* jump2Layout = new QGridLayout{};
+    jump2Layout->addWidget(jlvl2,0,0);
+    jump2Layout->addWidget(jump2,0,1);
+    jump2Layout->addWidget(je2,0,2);
+    jump2Layout->addWidget(ju2,0,3);
+    gridLayout->addLayout(jump2Layout,2,1);
     gridLayout->addWidget(j2,2,5);
     gridLayout->addWidget(new QLabel{"Combination Jump."},3,0);
     auto* comboLayout = new QGridLayout{};
-    comboLayout->addWidget(combojump1, 0,0);
+    auto* combojump1Layout = new QGridLayout{};
+    combojump1Layout->addWidget(jlvl3,0,0);
+    combojump1Layout->addWidget(combojump1,0,1);
+    combojump1Layout->addWidget(je3,0,2);
+    combojump1Layout->addWidget(ju3,0,3);
+    comboLayout->addLayout(combojump1Layout, 0,0);
     comboLayout->addWidget(new QLabel{"+"},0,1);
-    comboLayout->addWidget(combojump2,0,2);
+    auto* combojump2Layout = new QGridLayout{};
+    combojump2Layout->addWidget(jlvl4,0,0);
+    combojump2Layout->addWidget(combojump2,0,1);
+    combojump2Layout->addWidget(je4,0,2);
+    combojump2Layout->addWidget(ju4,0,3);
+    comboLayout->addLayout(combojump2Layout,0,2);
     gridLayout->addLayout(comboLayout,3,1);
     gridLayout->addWidget(cj,3,5);
 
@@ -310,66 +347,66 @@ void LadiesSPWindow::connect() {
 
     });
 
-    QObject::connect(this->jump1, &QComboBox::currentIndexChanged, this, [this]() {
-        int index = jump1->currentIndex();
-        if (index - 1 >= 0) {
-        Jumps *currentJump = this->_service.getJumps()[index - 1];
+//    QObject::connect(this->jump1, &QComboBox::currentIndexChanged, this, [this]() {
+//        int index = jump1->currentIndex();
+//        if (index - 1 >= 0) {
+//        Jumps *currentJump = this->_service.getJumps()[index - 1];
+//
+//        double baseValue = currentJump->getBaseValue();
+//        this->SPbaseValueLabels[0]->setText(QString::number(baseValue, 'f', 2));
+//        this->SPTotalLabels[0]->setText(QString::number(baseValue, 'f', 2));
+//        updateTotals();
+//    }
+//
+//    });
 
-        double baseValue = currentJump->getBaseValue();
-        this->SPbaseValueLabels[0]->setText(QString::number(baseValue, 'f', 2));
-        this->SPTotalLabels[0]->setText(QString::number(baseValue, 'f', 2));
-        updateTotals();
-    }
+//    QObject::connect(this->jump2, &QComboBox::currentIndexChanged, this, [this](){
+//        int index = jump2->currentIndex();
+//        if(index - 1 >= 0) {
+//            Jumps *currentJump = this->_service.getJumps()[index - 1];
+//
+//            double baseValue = currentJump->getBaseValue();
+//            this->SPbaseValueLabels[1]->setText(QString::number(baseValue, 'f', 2));
+//            this->SPTotalLabels[1]->setText(QString::number(baseValue, 'f', 2));
+//            updateTotals();
+//        }
+//    });
 
-    });
-
-    QObject::connect(this->jump2, &QComboBox::currentIndexChanged, this, [this](){
-        int index = jump2->currentIndex();
-        if(index - 1 >= 0) {
-            Jumps *currentJump = this->_service.getJumps()[index - 1];
-
-            double baseValue = currentJump->getBaseValue();
-            this->SPbaseValueLabels[1]->setText(QString::number(baseValue, 'f', 2));
-            this->SPTotalLabels[1]->setText(QString::number(baseValue, 'f', 2));
-            updateTotals();
-        }
-    });
-
-    QObject::connect(this->combojump1, &QComboBox::currentIndexChanged, this, [this](){
-        int index = combojump1->currentIndex()-1;
-        if(index > 0) {
-            Jumps *currentJump = this->_service.getJumps()[index];
-
-            double baseValue = 0;
-
-            if (combojump2->currentIndex() != 0) {
-                baseValue += this->_service.getJumps()[combojump2->currentIndex() - 1]->getBaseValue();
-            }
-
-            baseValue += currentJump->getBaseValue();
-            this->SPbaseValueLabels[2]->setText(QString::number(baseValue, 'f', 2));
-            this->SPTotalLabels[2]->setText(QString::number(baseValue, 'f', 2));
-            updateTotals();
-        }
-    });
-
-    QObject::connect(this->combojump2, &QComboBox::currentIndexChanged, this, [this](){
-        int index = combojump2->currentIndex()-1;
-        if(index > 0) {
-            Jumps *currentJump = this->_service.getJumps()[index];
-
-            double baseValue = 0;
-
-            if (combojump1->currentIndex() != 0) {
-                baseValue += this->_service.getJumps()[combojump1->currentIndex() - 1]->getBaseValue();
-            }
-
-            baseValue += currentJump->getBaseValue();
-            this->SPbaseValueLabels[2]->setText(QString::number(baseValue, 'f', 2));
-            this->SPTotalLabels[2]->setText(QString::number(baseValue, 'f', 2));
-            updateTotals();
-        }
-    });
+//    QObject::connect(this->combojump1, &QComboBox::currentIndexChanged, this, [this](){
+//        int index = combojump1->currentIndex()-1;
+//        if(index > 0) {
+//            Jumps *currentJump = this->_service.getJumps()[index];
+//
+//            double baseValue = 0;
+//
+//            if (combojump2->currentIndex() != 0) {
+//                baseValue += this->_service.getJumps()[combojump2->currentIndex() - 1]->getBaseValue();
+//            }
+//
+//            baseValue += currentJump->getBaseValue();
+//            this->SPbaseValueLabels[2]->setText(QString::number(baseValue, 'f', 2));
+//            this->SPTotalLabels[2]->setText(QString::number(baseValue, 'f', 2));
+//            updateTotals();
+//        }
+//    });
+//
+//    QObject::connect(this->combojump2, &QComboBox::currentIndexChanged, this, [this](){
+//        int index = combojump2->currentIndex()-1;
+//        if(index > 0) {
+//            Jumps *currentJump = this->_service.getJumps()[index];
+//
+//            double baseValue = 0;
+//
+//            if (combojump1->currentIndex() != 0) {
+//                baseValue += this->_service.getJumps()[combojump1->currentIndex() - 1]->getBaseValue();
+//            }
+//
+//            baseValue += currentJump->getBaseValue();
+//            this->SPbaseValueLabels[2]->setText(QString::number(baseValue, 'f', 2));
+//            this->SPTotalLabels[2]->setText(QString::number(baseValue, 'f', 2));
+//            updateTotals();
+//        }
+//    });
 
     QObject::connect(this->j1, &QCheckBox::stateChanged, this, [this](){
 
@@ -428,6 +465,8 @@ void LadiesSPWindow::connect() {
     connectTotalBV();
     connectTotalTES();
     connectSpins();
+    connectJumps();
+
 }
 
 void LadiesSPWindow::connectPCS() {
@@ -450,7 +489,9 @@ void LadiesSPWindow::computePCS() {
     updateTotals();
 
 }
-
+// QComboBox* je1, *je2, *je3, *je4;
+//    QComboBox* ju1, *ju2, *ju3, *ju4;
+//    QComboBox* jlvl1, *jlvl2, *jlvl3, *jlvl4;
 void LadiesSPWindow::addJumps() {
 
     std::vector<Jumps*> jumps = this->_service.getJumps();
@@ -460,12 +501,84 @@ void LadiesSPWindow::addJumps() {
     combojump1->addItem("");
     combojump2->addItem("");
 
-    for(auto* j: jumps){
-        jump1->addItem(QString::fromStdString(j->toString()));
-        jump2->addItem(QString::fromStdString(j->toString()));
-        combojump1->addItem(QString::fromStdString(j->toString()));
-        combojump2->addItem(QString::fromStdString(j->toString()));
-    }
+    jump1->addItem("Lutz");
+    jump1->addItem("Flip");
+    jump1->addItem("Toeloop");
+    jump1->addItem("Salchow");
+    jump1->addItem("Loop");
+    jump1->addItem("Axel");
+
+    jump2->addItem("Lutz");
+    jump2->addItem("Flip");
+    jump2->addItem("Toeloop");
+    jump2->addItem("Salchow");
+    jump2->addItem("Loop");
+    jump2->addItem("Axel");
+
+    combojump1->addItem("Lutz");
+    combojump1->addItem("Flip");
+    combojump1->addItem("Toeloop");
+    combojump1->addItem("Salchow");
+    combojump1->addItem("Loop");
+    combojump1->addItem("Axel");
+
+    combojump2->addItem("Lutz");
+    combojump2->addItem("Flip");
+    combojump2->addItem("Toeloop");
+    combojump2->addItem("Salchow");
+    combojump2->addItem("Loop");
+    combojump2->addItem("Axel");
+
+    jlvl1->addItem("");
+    jlvl1->addItem("1");
+    jlvl1->addItem("2");
+    jlvl1->addItem("3");
+    jlvl1->addItem("4");
+
+    jlvl2->addItem("");
+    jlvl2->addItem("1");
+    jlvl2->addItem("2");
+    jlvl2->addItem("3");
+    jlvl2->addItem("4");
+
+    jlvl3->addItem("");
+    jlvl3->addItem("1");
+    jlvl3->addItem("2");
+    jlvl3->addItem("3");
+    jlvl3->addItem("4");
+
+    jlvl4->addItem("");
+    jlvl4->addItem("1");
+    jlvl4->addItem("2");
+    jlvl4->addItem("3");
+    jlvl4->addItem("4");
+
+    ju1->addItem("");
+    ju1->addItem("<");
+    ju2->addItem("");
+    ju2->addItem("<");
+    ju3->addItem("");
+    ju4->addItem("");
+    ju3->addItem("<");
+    ju4->addItem("<");
+
+    je1->addItem("");
+    je2->addItem("");
+    je3->addItem("");
+    je4->addItem("");
+    je1->addItem("e");
+    je2->addItem("e");
+    je3->addItem("e");
+    je4->addItem("e");
+
+  //  for(auto* j: jumps){
+//        jump1->addItem(QString::fromStdString(j->toString()));
+//        jump2->addItem(QString::fromStdString(j->toString()));
+//        combojump1->addItem(QString::fromStdString(j->toString()));
+//        combojump2->addItem(QString::fromStdString(j->toString()));
+   // }
+
+
 
 }
 
@@ -527,6 +640,7 @@ void LadiesSPWindow::addSpins() {
     spin3->addItem("CoSp");
     fs3->addItem("");
     fs3->addItem("F");
+
     cs3->addItem("");
     cs3->addItem("C");
     lvls3->addItem("");
@@ -535,6 +649,28 @@ void LadiesSPWindow::addSpins() {
     lvls3->addItem("2");
     lvls3->addItem("3");
     lvls3->addItem("4");
+}
+
+void LadiesSPWindow::connectJumps() {
+    QObject::connect(this->jump1, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectJump1);
+    QObject::connect(this->jlvl1, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectJump1);
+    QObject::connect(this->ju1, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectJump1);
+    QObject::connect(this->je1, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectJump1);
+
+    QObject::connect(this->jump2, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectJump2);
+    QObject::connect(this->jlvl2, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectJump2);
+    QObject::connect(this->ju2, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectJump2);
+    QObject::connect(this->je2, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectJump2);
+
+    QObject::connect(this->combojump1, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectComboJump1);
+    QObject::connect(this->jlvl3, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectComboJump1);
+    QObject::connect(this->ju3, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectComboJump1);
+    QObject::connect(this->je3, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectComboJump1);
+
+    QObject::connect(this->combojump2, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectComboJump2);
+    QObject::connect(this->jlvl4, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectComboJump2);
+    QObject::connect(this->ju4, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectComboJump2);
+    QObject::connect(this->je4, &QComboBox::currentIndexChanged, this, &LadiesSPWindow::connectComboJump2);
 }
 
 
@@ -617,8 +753,7 @@ void LadiesSPWindow::connectSpin1() {
         std::cout<<spin->toString()<<" "<<spin->getBaseValue()<<"\n";
         this->SPbaseValueLabels[3]->setText(QString::number(spin->getBaseValue(), 'f', 2));
     }
-    else
-        std::cout<<0<<"\n";
+
 }
 
 
@@ -636,6 +771,7 @@ void LadiesSPWindow::updateTotals() {
 }
 
 void LadiesSPWindow::connectSpin2() {
+    std::cout<<spin2->currentIndex()<<" "<<lvls2->currentIndex();
     if(spin2->currentIndex() && lvls2->currentIndex()){
 
         bool fly;
@@ -658,8 +794,7 @@ void LadiesSPWindow::connectSpin2() {
         std::cout<<spin->toString()<<" "<<spin->getBaseValue()<<"\n";
         this->SPbaseValueLabels[4]->setText(QString::number(spin->getBaseValue(), 'f', 2));
     }
-    else
-        std::cout<<0<<"\n";
+
 }
 
 
@@ -686,8 +821,86 @@ void LadiesSPWindow::connectSpin3() {
         std::cout<<spin->toString()<<" "<<spin->getBaseValue()<<"\n";
         this->SPbaseValueLabels[5]->setText(QString::number(spin->getBaseValue(), 'f', 2));
     }
-    else
-        std::cout<<0<<"\n";
+
+}
+
+void LadiesSPWindow::connectJump1() {
+
+    if(jump1->currentIndex() && jlvl1->currentIndex()){
+        bool ur, edge;
+
+        if(this->ju1->currentIndex())
+            ur = true;
+        else
+            ur = false;
+
+        if(this->je1->currentIndex())
+            edge = true;
+        else
+            edge = false;
+
+        auto name = this->jump1->currentText().toStdString();
+        auto lvl = this->jlvl1->currentText().toInt();
+
+
+        try {
+            Jumps *jump = this->_service.getJump(ur, edge, lvl, name);
+            std::cout<<"my jump is: "<<jump->toString()<<" "<< jump->getBaseValue()<<std::endl;
+            double baseValue = jump->getBaseValue();
+            this->SPbaseValueLabels[0]->setText(QString::number(baseValue, 'f', 2));
+            this->SPTotalLabels[0]->setText(QString::number(baseValue, 'f', 2));
+            updateTotals();
+
+        }
+        catch (const ElementException &ve) {
+            QMessageBox msg;
+            msg.setText(QString::fromStdString(ve.get_message()));
+            msg.exec();
+            this->je1->setCurrentIndex(0);
+        }
+        //todo: catch this somewhere else
+
+    }
+}
+
+void LadiesSPWindow::connectJump2() {
+
+    if(jump2->currentIndex() && jlvl2->currentIndex()){
+        bool ur, edge;
+
+        if(this->ju2->currentIndex())
+            ur = true;
+        else
+            ur = false;
+
+        if(this->je2->currentIndex())
+            edge = true;
+        else
+            edge = false;
+
+        auto name = this->jump2->currentText().toStdString();
+        auto lvl = this->jlvl2->currentText().toInt();
+
+        std::cout<<name<<" "<<lvl<<" "<<edge<<" "<<ur<<std::endl;
+
+
+        try {
+            Jumps *jump = this->_service.getJump(ur, edge, lvl, name);
+            std::cout<<"my jump is: "<<jump->toString()<<" "<< jump->getBaseValue()<<std::endl;
+            double baseValue = jump->getBaseValue();
+            this->SPbaseValueLabels[1]->setText(QString::number(baseValue, 'f', 2));
+            this->SPTotalLabels[1]->setText(QString::number(baseValue, 'f', 2));
+            updateTotals();
+
+        }
+        catch (const ElementException &ve) {
+            QMessageBox msg;
+            msg.setText(QString::fromStdString(ve.get_message()));
+            msg.exec();
+        }
+        //todo: catch this somewhere else
+
+    }
 }
 
 
@@ -729,4 +942,132 @@ void LadiesSPWindow::clearScore() {
 
     this->SPTotalLabel->clear();
 }
+
+void LadiesSPWindow::connectComboJump1() {
+    if(combojump1->currentIndex() && jlvl3->currentIndex()){
+        bool ur, edge;
+
+        if(this->ju3->currentIndex())
+            ur = true;
+        else
+            ur = false;
+
+        if(this->je3->currentIndex())
+            edge = true;
+        else
+            edge = false;
+
+        auto name = this->combojump1->currentText().toStdString();
+        auto lvl = this->jlvl3->currentText().toInt();
+
+        //std::cout<<name<<" "<<lvl<<" "<<edge<<" "<<ur<<std::endl;
+
+
+        try {
+            Jumps *jump = this->_service.getJump(ur, edge, lvl, name);
+            //std::cout<<"my jump is: "<<jump->toString()<<" "<< jump->getBaseValue()<<std::endl;
+            double baseValue = 0;
+
+            if (combojump2->currentIndex() != 0 && jlvl4->currentIndex()) {
+                bool u, e;
+                int l;
+                l = jlvl4->currentText().toInt();
+
+                if(ju4->currentIndex())
+                    u = true;
+                else
+                    u = false;
+
+                if(je4->currentIndex())
+                    e = true;
+                else
+                    e = false;
+
+                auto * j =  this->_service.getJump(u,e,l,combojump2->currentText().toStdString());
+                baseValue += j->getBaseValue();
+            }
+
+            baseValue += jump->getBaseValue();
+            this->SPbaseValueLabels[2]->setText(QString::number(baseValue, 'f', 2));
+            this->SPTotalLabels[2]->setText(QString::number(baseValue, 'f', 2));
+            updateTotals();
+
+        }
+        catch (const ElementException &ve) {
+            QMessageBox msg;
+            msg.setText(QString::fromStdString(ve.get_message()));
+            msg.exec();
+            this->je3->setCurrentIndex(0);
+        }
+        //todo: catch this somewhere else
+
+    }
+}
+
+
+void LadiesSPWindow::connectComboJump2() {
+    if(combojump2->currentIndex() && jlvl4->currentIndex()){
+        bool ur, edge;
+
+        if(this->ju4->currentIndex())
+            ur = true;
+        else
+            ur = false;
+
+        if(this->je4->currentIndex())
+            edge = true;
+        else
+            edge = false;
+
+        auto name = this->combojump2->currentText().toStdString();
+        auto lvl = this->jlvl4->currentText().toInt();
+
+        std::cout<<name<<" "<<lvl<<" "<<edge<<" "<<ur<<std::endl;
+
+
+        try {
+            Jumps *jump = this->_service.getJump(ur, edge, lvl, name);
+            std::cout<<"my jump is: "<<jump->toString()<<" "<< jump->getBaseValue()<<std::endl;
+            double baseValue = 0;
+            if (combojump1->currentIndex() != 0 && jlvl3->currentIndex()) {
+                bool u, e;
+                int l;
+
+                std::cout<<"combo jump 1 level index: "<<jlvl3->currentIndex()<<" "<<jlvl3->currentText().toInt()<<std::endl;
+                l = this->jlvl3->currentText().toInt();
+
+                if(ju3->currentIndex())
+                    u = true;
+                else
+                    u = false;
+
+                if(je3->currentIndex())
+                    e = true;
+                else
+                    e = false;
+
+                std::cout<<combojump1->currentText().toStdString()<<" "<<l<<" "<<e<<" "<<u<<std::endl;
+                auto* j = this->_service.getJump(u,e,l,combojump1->currentText().toStdString());
+                baseValue += j->getBaseValue();
+                std::cout<<"Combo jump1 is: "<<j->toString()<<std::endl;
+            }
+
+            baseValue += jump->getBaseValue();
+
+            this->SPbaseValueLabels[2]->setText(QString::number(baseValue, 'f', 2));
+            this->SPTotalLabels[2]->setText(QString::number(baseValue, 'f', 2));
+            updateTotals();
+
+        }
+        catch (const ElementException &ve) {
+            QMessageBox msg;
+            msg.setText(QString::fromStdString(ve.get_message()));
+            msg.exec();
+            this->je4->setCurrentIndex(0);
+        }
+        //todo: catch this somewhere else
+
+    }
+}
+
 

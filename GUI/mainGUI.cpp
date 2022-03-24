@@ -3,6 +3,8 @@
 //
 
 #include <QFormLayout>
+#include <QMessageBox>
+#include <Exception/ElementException.h>
 #include "mainGUI.h"
 
 //mainGUI::mainGUI() {
@@ -59,7 +61,15 @@ void mainGUI::connectGUI() {
 }
 
 void mainGUI::openLadiesWindow() {
-    this->ladiesWindow = new LadiesFSWindow(this->_service);
-    ladiesWindow->show();
+
+    try {
+        this->ladiesWindow = new LadiesFSWindow(this->_service);
+        ladiesWindow->show();
+    }
+    catch (const ElementException &ve) {
+        QMessageBox msg;
+        msg.setText(QString::fromStdString(ve.get_message()));
+        msg.exec();
+    }
 
 }

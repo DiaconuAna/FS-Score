@@ -31,6 +31,9 @@ private:
     QCheckBox* j1, *j2, *cj;
     QComboBox* fs1, *fs2, *fs3;
     QComboBox* cs1, *cs2, *cs3;
+    QComboBox* je1, *je2, *je3, *je4;
+    QComboBox* ju1, *ju2, *ju3, *ju4;
+    QComboBox* jlvl1, *jlvl2, *jlvl3, *jlvl4;
     QComboBox* lvls1, *lvls2, *lvls3;
     QComboBox* spin1, *spin2, *spin3;
     QComboBox* stsq;
@@ -62,10 +65,16 @@ public:
     void connectTotalBV();
     void connectTotalTES();
     void connectSpins();
+    void connectJumps();
 
     void connectSpin1();
     void connectSpin2();
     void connectSpin3();
+
+    void connectJump1();
+    void connectJump2();
+    void connectComboJump1();
+    void connectComboJump2();
 
     void updateTotals();
 

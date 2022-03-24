@@ -4,6 +4,7 @@
 
 #include <QFormLayout>
 #include <iostream>
+#include <QMessageBox>
 #include "LadiesFSWindow.h"
 
 LadiesFSWindow::LadiesFSWindow(ScoreService& s): _service{s} {
@@ -103,6 +104,13 @@ void LadiesFSWindow::connect() {
 void LadiesFSWindow::openSP() {
     QString skaterName = this->nameEdit->text();
 
-    this->SPWindow = new LadiesSPWindow(skaterName.toStdString(), this->_service);
-    SPWindow->show();
+    if(skaterName == ""){
+        QMessageBox msg;
+        msg.setText(QString::fromStdString("Please input a name!"));
+        msg.exec();
+    }
+    else {
+        this->SPWindow = new LadiesSPWindow(skaterName.toStdString(), this->_service);
+        SPWindow->show();
+    }
 }

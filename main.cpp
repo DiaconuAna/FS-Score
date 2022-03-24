@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
 
     ElementsRepo repo;
     ScoreService s{repo};
+    //s.getSpin(true, true, "CoSp",4);
 
     mainGUI gui{s};
     gui.setFixedSize(300,350);
@@ -26,9 +27,9 @@ int main(int argc, char *argv[])
 
 
 
-    for(auto* el: repo.getJumps())
-        std::cout<<el<<"\n";
-
+    //for(auto* el: repo.getSpins())
+       //std::cout<<el->toString()<<"\n";
+//
     a.exec();
 
 
