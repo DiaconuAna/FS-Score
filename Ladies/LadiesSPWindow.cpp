@@ -926,6 +926,21 @@ void LadiesSPWindow::clearScore() {
     this->lvls2->setCurrentIndex(0);
     this->lvls3->setCurrentIndex(0);
 
+    this->je1->setCurrentIndex(0);
+    this->je2->setCurrentIndex(0);
+    this->je3->setCurrentIndex(0);
+    this->je4->setCurrentIndex(0);
+
+    this->ju1->setCurrentIndex(0);
+    this->ju2->setCurrentIndex(0);
+    this->ju3->setCurrentIndex(0);
+    this->ju4->setCurrentIndex(0);
+
+    this->jlvl1->setCurrentIndex(0);
+    this->jlvl2->setCurrentIndex(0);
+    this->jlvl3->setCurrentIndex(0);
+    this->jlvl4->setCurrentIndex(0);
+
     for(int i=0;i<7;i++){
         this->SPbaseValueLabels[i]->clear();
         this->SPTotalLabels[i]->clear();

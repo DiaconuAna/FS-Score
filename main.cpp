@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
     gui.setFixedSize(300,350);
 
     gui.setStyleSheet("background-image:url(D:/Personal projects/FS Score v2/Resources/icee.jpg); background-position: center; ");
+    gui.setWindowTitle("Figure Skating Calculator");
     gui.show();
 
 

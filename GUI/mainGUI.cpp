@@ -64,6 +64,7 @@ void mainGUI::openLadiesWindow() {
 
     try {
         this->ladiesWindow = new LadiesFSWindow(this->_service);
+        ladiesWindow->setWindowTitle("Ladies");
         ladiesWindow->show();
     }
     catch (const ElementException &ve) {

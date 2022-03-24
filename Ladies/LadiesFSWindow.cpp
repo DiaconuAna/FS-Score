@@ -111,6 +111,7 @@ void LadiesFSWindow::openSP() {
     }
     else {
         this->SPWindow = new LadiesSPWindow(skaterName.toStdString(), this->_service);
+        SPWindow->setWindowTitle("Ladies SP");
         SPWindow->show();
     }
 }
