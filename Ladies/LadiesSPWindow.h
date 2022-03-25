@@ -84,6 +84,12 @@ public:
     void addSpins();
 
     void clearScore();
+    void computeScore();
+
+    Element* getJump1();
+    Element* getJump2();
+    Element* getComboJump();
+
 
 };
 

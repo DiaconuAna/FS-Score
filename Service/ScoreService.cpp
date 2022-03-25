@@ -83,3 +83,8 @@ Jumps *ScoreService::getJump(bool urflag, bool edgeflag, int level, std::string 
 
 }
 
+void ScoreService::getElementScores(std::vector<Element *> elements) {
+    for(auto& el: elements)
+        std::cout<<el->toString()<<"\n";
+}
+

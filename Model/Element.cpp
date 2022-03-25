@@ -65,4 +65,12 @@ void Element::setValidFlag(bool f) {
     this->validFlag = f;
 }
 
+std::string Element::toString() {
+    auto str = "BV: " + std::to_string(this->BaseValue);
+    str += " ; GOE Mark: " + std::to_string(this->GOEMark);
+    str += " ; GOE: " + std::to_string(this->GOE);
+
+    return str;
+}
+
 

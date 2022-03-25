@@ -45,6 +45,8 @@ std::string Jumps::toString() {
     if(!this->getValidFlag())
         str += "*";
 
+    str +="\n" + Element::toString();
+
     return str;
 }
 

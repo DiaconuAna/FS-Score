@@ -333,6 +333,7 @@ void LadiesSPWindow::initGUI() {
 void LadiesSPWindow::connect() {
 
     QObject::connect(this->SPClearScore, &QPushButton::clicked, this, &LadiesSPWindow::clearScore);
+    QObject::connect(this->SPComputeScore, &QPushButton::clicked, this, &LadiesSPWindow::computeScore);
 
     QObject::connect(this->stsq, &QComboBox::currentIndexChanged, this, [this](){
        int index = stsq->currentIndex()-1;
@@ -959,6 +960,7 @@ void LadiesSPWindow::clearScore() {
 }
 
 void LadiesSPWindow::connectComboJump1() {
+
     if(combojump1->currentIndex() && jlvl3->currentIndex()){
         bool ur, edge;
 
@@ -974,9 +976,6 @@ void LadiesSPWindow::connectComboJump1() {
 
         auto name = this->combojump1->currentText().toStdString();
         auto lvl = this->jlvl3->currentText().toInt();
-
-        //std::cout<<name<<" "<<lvl<<" "<<edge<<" "<<ur<<std::endl;
-
 
         try {
             Jumps *jump = this->_service.getJump(ur, edge, lvl, name);
@@ -1085,4 +1084,204 @@ void LadiesSPWindow::connectComboJump2() {
     }
 }
 
+void LadiesSPWindow::computeScore() {
+    std::vector<Element*> elements;
 
+    auto* myjump1 = getJump1();
+    if(myjump1)
+        elements.push_back(myjump1);
+
+    auto* myjump2 = getJump2();
+    if(myjump2)
+        elements.push_back(myjump2);
+
+    auto* combojump = getComboJump();
+    if(combojump)
+        elements.push_back(combojump);
+
+    this->_service.getElementScores(elements);
+}
+
+Element *LadiesSPWindow::getJump1() {
+
+    if(jump1->currentIndex() && jlvl1->currentIndex()){
+        bool ur, edge;
+
+        if(this->ju1->currentIndex())
+            ur = true;
+        else
+            ur = false;
+
+        if(this->je1->currentIndex())
+            edge = true;
+        else
+            edge = false;
+
+        auto name = this->jump1->currentText().toStdString();
+        auto lvl = this->jlvl1->currentText().toInt();
+
+        Jumps *jump = this->_service.getJump(ur, edge, lvl, name);
+
+        //get the GOE mark, GOE, secondHalf flag and total
+        double goeMark = this->SPGOEMarkLabels[0]->text().toDouble();
+        int goe = this->SPgoes[0]->value();
+
+        int shf;
+        if(j1->isChecked())
+            shf = 1;
+        else
+            shf = 0;
+
+        //std::cout<<jump->toString()<<" "<<goeMark<<" "<<goe<<" "<<shf<<std::endl;
+
+        // create the jump
+
+        return new Jumps(name, jump->getAbbreviationName(), lvl, jump->getBaseValue(), goe, goeMark, shf, 1, edge, ur);
+    }
+    else{
+        QMessageBox msg;
+        msg.setText(QString::fromStdString("Jump 1 has not been entered!"));
+        msg.exec();
+        return nullptr;
+    }
+
+}
+
+Element *LadiesSPWindow::getJump2() {
+    if(jump2->currentIndex() && jlvl2->currentIndex()){
+        bool ur, edge;
+
+        if(this->ju2->currentIndex())
+            ur = true;
+        else
+            ur = false;
+
+        if(this->je2->currentIndex())
+            edge = true;
+        else
+            edge = false;
+
+        auto name = this->jump2->currentText().toStdString();
+        auto lvl = this->jlvl2->currentText().toInt();
+
+        Jumps *jump = this->_service.getJump(ur, edge, lvl, name);
+
+        //get the GOE mark, GOE, secondHalf flag and total
+        double goeMark = this->SPGOEMarkLabels[1]->text().toDouble();
+        int goe = this->SPgoes[1]->value();
+
+        int shf;
+        if(j2->isChecked())
+            shf = 1;
+        else
+            shf = 0;
+
+        // create the jump
+
+        return new Jumps(name, jump->getAbbreviationName(), lvl, jump->getBaseValue(), goe, goeMark, shf, 1, edge, ur);
+    }
+    else{
+        QMessageBox msg;
+        msg.setText(QString::fromStdString("Jump 2 has not been entered!"));
+        msg.exec();
+        return nullptr;
+    }
+}
+
+Element *LadiesSPWindow::getComboJump() {
+    if(combojump1->currentIndex() && jlvl3->currentIndex()){
+        if(combojump2->currentIndex() && jlvl4->currentIndex()){
+
+            // get combo jump 1
+
+            bool ur1, edge1;
+            std::string ur1s, edge1s;
+
+            if(this->ju3->currentIndex()){
+                ur1s = "<";
+                ur1 = true;}
+            else {
+                ur1s="";
+                ur1 = false;
+            }
+
+            if(this->je3->currentIndex()){
+                edge1s = "e";
+                edge1 = true;}
+            else {
+                edge1s = "";
+                edge1 = false;
+            }
+
+            auto name = this->combojump1->currentText().toStdString();
+            auto lvl = this->jlvl3->currentText().toInt();
+
+            Jumps *cjump1 = this->_service.getJump(ur1, edge1, lvl, name);
+
+            // get combo jump 2
+
+            bool ur2, edge2;
+            std::string ur2s, edge2s;
+
+            if(this->ju4->currentIndex()) {
+                ur2s="<";
+                ur2 = true;
+            }
+            else{
+                ur2s="";
+                ur2 = false;}
+
+            if(this->je4->currentIndex()) {
+                edge2s="e";
+                edge2 = true;
+            }
+            else {
+                edge2s="";
+                edge2 = false;
+            }
+
+            auto name1 = this->combojump2->currentText().toStdString();
+            auto lvl1 = this->jlvl4->currentText().toInt();
+
+            Jumps *cjump2 = this->_service.getJump(ur2, edge2, lvl1, name1);
+
+            // the name of the jump combo is name_jump1 + name_jump2
+
+            std::string comboname = std::to_string(cjump1->getRotationNumber())+cjump1->getJumpName()+edge1s+ur1s+ "+" +std::to_string(cjump2->getRotationNumber())+cjump2->getJumpName()+edge2s + ur2s;
+
+            // same goes for the abbreviation
+
+            std::string abbr = cjump1->getAbbreviationName()+edge1s+ur1s + "+"+ std::to_string(cjump2->getRotationNumber()) + cjump2->getAbbreviationName()+edge2s + ur2s;
+
+            std::cout<<comboname<<" "<<abbr<<std::endl;
+
+            // get base value, goe and stuff
+            //get the GOE mark, GOE, secondHalf flag and total
+
+            double goeMark = this->SPGOEMarkLabels[2]->text().toDouble();
+            int goe = this->SPgoes[2]->value();
+
+            int shf;
+            if(cj->isChecked())
+                shf = 1;
+            else
+                shf = 0;
+
+            return new Jumps(comboname, abbr, lvl, this->SPbaseValueLabels[2]->text().toDouble(), goe, goeMark, shf, 1, 0, 0);
+
+
+        }
+        else{
+            QMessageBox msg;
+            msg.setText(QString::fromStdString("Combination jump 2 has not been entered!"));
+            msg.exec();
+            return nullptr;
+        }
+    }
+    else {
+        QMessageBox msg;
+        msg.setText(QString::fromStdString("Combination jump 1 has not been entered!"));
+        msg.exec();
+        return nullptr;
+    }
+}

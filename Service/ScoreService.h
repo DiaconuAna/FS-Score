@@ -24,6 +24,8 @@ public:
     Spins* getSpin(bool flyingFlag, bool changeFlag, std::string name, int level);
     Jumps* getJump(bool urflag, bool edgeflag, int level, std::string name);
 
+    void getElementScores(std::vector<Element*> elements);
+
 
     ~ScoreService();
 
