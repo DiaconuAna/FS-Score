@@ -20,6 +20,8 @@ public:
     Element(double bv, int goe, double goem, int shf, bool vf);
     ~Element()= default;
 
+    Element(const Element& e);
+
     double getBaseValue();
     void setBaseValue(double bv);
 

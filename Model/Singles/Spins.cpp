@@ -90,3 +90,8 @@ std::string Spins::toString() {
 
     return name;
 }
+
+Spins::Spins(const Spins &s): Element(s), abbreviation{s.abbreviation}, level{s.level}, flyingFlag{s.flyingFlag},
+                              changeofFootFlag{s.changeofFootFlag}, comboFlag{s.comboFlag}{
+
+}

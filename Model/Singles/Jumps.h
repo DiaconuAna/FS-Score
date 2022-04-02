@@ -23,6 +23,9 @@ public:
 
     }
 
+    //copy constructor
+    Jumps(const Jumps& j);
+
     std::string getJumpName();
     std::string getAbbreviationName();
     int getRotationNumber();

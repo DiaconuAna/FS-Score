@@ -29,3 +29,7 @@ int StepSequence::getLevel() {
 void StepSequence::setLevel(int lvl) {
     this->level = lvl;
 }
+
+StepSequence::StepSequence(const StepSequence &stsq): Element(stsq), level{stsq.level} {
+
+}

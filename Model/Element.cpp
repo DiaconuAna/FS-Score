@@ -73,4 +73,8 @@ std::string Element::toString() {
     return str;
 }
 
+Element::Element(const Element &e): BaseValue{e.BaseValue}, GOE{e.GOE}, GOEMark{e.GOEMark},
+                                    secondHalfFlag{e.secondHalfFlag}, validFlag{e.validFlag} {
+
+}
 

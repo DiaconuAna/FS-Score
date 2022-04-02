@@ -21,6 +21,7 @@ public:
 
     Spins(std::string name, std::string abbr, int level, bool f, bool c, bool co, double bv, int goe, double goem, int shf, bool vf);
     ~Spins();
+    Spins(const Spins& s);
 
     std::string getName();
     void setName(std::string n);

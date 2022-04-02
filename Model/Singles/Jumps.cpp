@@ -67,3 +67,7 @@ std::ostream &operator<<(std::ostream &os, const Jumps &j) {
     return os;
 
 }
+
+Jumps::Jumps(const Jumps &j): Element(j), abbreviation{j.abbreviation}, rotationNumber{j.rotationNumber}, edgeFlag{j.edgeFlag}, underrotationFlag{j.underrotationFlag}  {
+
+}
