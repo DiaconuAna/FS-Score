@@ -26,6 +26,9 @@ public:
     //copy constructor
     Jumps(const Jumps& j);
 
+    //assignment operator
+    Jumps& operator=(const Jumps& j);
+
     std::string getJumpName();
     std::string getAbbreviationName();
     int getRotationNumber();

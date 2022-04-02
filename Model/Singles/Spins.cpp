@@ -95,3 +95,16 @@ Spins::Spins(const Spins &s): Element(s), abbreviation{s.abbreviation}, level{s.
                               changeofFootFlag{s.changeofFootFlag}, comboFlag{s.comboFlag}{
 
 }
+
+Spins &Spins::operator=(const Spins &s) {
+
+    Element::operator=(s);
+    this->spinType = s.spinType;
+    this->abbreviation = s.abbreviation;
+    this->level = s.level;
+    this->flyingFlag = s.flyingFlag;
+    this->changeofFootFlag = s.changeofFootFlag;
+    this->comboFlag = s.comboFlag;
+
+    return *this;
+}

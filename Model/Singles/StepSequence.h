@@ -16,6 +16,8 @@ public:
     StepSequence(int lvl, double bv, int goe, double goem, int shf, bool vf);
     ~StepSequence();
     StepSequence(const StepSequence& stsq);
+    StepSequence& operator=(const StepSequence& stsq);
+
 
     int getLevel();
     void setLevel(int lvl);

@@ -78,3 +78,15 @@ Element::Element(const Element &e): BaseValue{e.BaseValue}, GOE{e.GOE}, GOEMark{
 
 }
 
+
+Element &Element::operator=(const Element &e) {
+
+    this->BaseValue = e.BaseValue;
+    this->GOE = e.GOE;
+    this->GOEMark = e.GOEMark;
+    this->secondHalfFlag = e.secondHalfFlag;
+    this->validFlag = e.validFlag;
+
+    return *this;
+}
+

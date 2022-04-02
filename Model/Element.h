@@ -20,7 +20,11 @@ public:
     Element(double bv, int goe, double goem, int shf, bool vf);
     ~Element()= default;
 
+    // copy constructor
     Element(const Element& e);
+
+    //assignment operator
+    Element& operator=(const Element& e);
 
     double getBaseValue();
     void setBaseValue(double bv);

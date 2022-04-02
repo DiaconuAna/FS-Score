@@ -33,3 +33,10 @@ void StepSequence::setLevel(int lvl) {
 StepSequence::StepSequence(const StepSequence &stsq): Element(stsq), level{stsq.level} {
 
 }
+
+StepSequence &StepSequence::operator=(const StepSequence &stsq) {
+
+    Element::operator=(stsq);
+    this->level = stsq.level;
+    return *this;
+}
